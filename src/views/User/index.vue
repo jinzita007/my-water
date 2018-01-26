@@ -62,6 +62,9 @@
         <el-form-item label="电子邮箱" prop="email">
           <el-input v-model="addForm.email" auto-complete="off"></el-input>
         </el-form-item>
+        <el-form-item label="电子邮箱" prop="userface">
+          <el-input v-model="addForm.userface" auto-complete="off"></el-input>
+        </el-form-item>
         <el-form-item label="状态" width="120">
           <el-switch v-model="addForm.enabled" :on-value="1" :off-value="0" on-text="启用" off-text="禁用" on-color="#13ce66" off-color="#ff4949">
           </el-switch>
@@ -132,6 +135,7 @@ export default {
         password: "",
         nickname: "",
         email: "",
+        userface: "",
         enabled: ""
       }
     };
@@ -154,9 +158,9 @@ export default {
     //获取用户列表数据
     getUser() {
       this.$http
-        .get("http://localhost:9090/alll", {
+        .get("http://localhost:9090/alls", {
           params: {
-            //nickname: this.filters.nickname,
+            keywords: this.filters.nickname,
             pageNo: this.page,
             pageSize: this.pagesize
           }
@@ -178,6 +182,7 @@ export default {
         password: "",
         nickname: "",
         email: "",
+        userface: "",
         enabled: ""
       };
     },
@@ -187,9 +192,9 @@ export default {
         if (valid) {
           this.$confirm("确认提交吗？", "提示", {}).then(() => {
             this.addLoading = true;
-            let params = Object.assign({}, this.addForm);
+            let params = this.addForm
             this.$http
-              .post("http://localhost:9090/user/", {
+              .post("http://localhost:9090/user", {
                 params
               })
               .then(res => {
