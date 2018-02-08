@@ -108,9 +108,9 @@ export default {
           console.log(err);
         });
     },
-    //新增商品品牌
+    //新增商品品牌--进入新增页面
     handleAdd() {
-
+      this.$router.push(`brand/add`);
     },
 
     //删除商品品牌
