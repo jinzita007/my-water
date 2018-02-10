@@ -13,13 +13,13 @@
             </el-form-item>
             <el-form-item label="商品图片" prop="goods_img">
                 <el-upload class="upload-demo" 
-                action="123"
+                action="http://localhost:9090/uploadqiniu"
                 :before-upload="beforeUpload"
                 :limit="1" 
                 multiple
+                :on-success="handSuccess" 
                 :on-exceed="handleExceed" 
-                :on-success="handSuccess"
-                :file-list="fileList" 
+                :file-list="fileList"
                 list-type="picture">
                     <el-button size="small" type="primary">点击上传</el-button>
                     <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -46,30 +46,13 @@
 export default {
   data() {
     return {
-      /*importUrl:"http://localhost:9090/uploadqiniu",
-      importHeaders:{
-        enctype:'multipart/form-data',
-  },*/
-
-      fileList: [
+      /*fileList: [
         {
-          name: "food.jpeg",
-          url:
-            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
+          name: "",
+          url: ""
         }
-      ],
-      fileList2: [
-        {
-          name: "food.jpeg",
-          url:
-            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-        },
-        {
-          name: "food2.jpeg",
-          url:
-            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-        }
-      ],
+      ],*/
+      fileList:[],
       ruleForm: {
         brand_name: "",
         brand_title: "",
@@ -110,30 +93,31 @@ export default {
     },
     beforeUpload(file) {
       //let file = file.target.files[0]; 
-      let param = new FormData();
-      param.append('file',file,file.name); //file是键，file是值，就是要传的文件
-      param.append('chunk','0');//添加form表单中其他数据
+      //let param = new FormData();
+      //param.append('file',file,file.name); //file是键，file是值，就是要传的文件
+      //param.append('chunk','0');//添加form表单中其他数据
       // 自己上传文件 想加什么都可以
-      console.log(param.get('file')); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
+      //console.log(param.get('file')); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
       /*let config = {
             headers:{
               'Content-Type':'multipart/form-data',
               'Accept': 'application/json'
               }
           }; */ //添加请求头
-      this.$http.post("http://localhost:9090/uploadqiniu", param)
-        .then(res => {
+    //  this.$http.post("http://localhost:9090/uploadqiniu", param)
+     //   .then(res => {
               /*this.$message({
                 message: "上传成功！",
                 type: "success"
               })*/
-              this.ruleForm.goods_img = res.data.url
-              console.log(res.data)
-              })
-        .catch(err => {
-          console.log(err);
-    });
-    return false // 返回false不会自动上传
+       //       this.ruleForm.goods_img = res.data.url
+              //this.fileList = res.data
+       //       console.log(res.data)
+     //         })
+    //    .catch(err => {
+    //      console.log(err);
+   // });
+  //  return false // 返回false不会自动上传
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
@@ -153,8 +137,8 @@ export default {
     },
     handSuccess(response, file, fileList) {
       //console.log(response)
-     
-      //console.log(response.data);
+      console.log('上传图片成功的回调>>>'+JSON.stringify(response));
+      this.ruleForm.goods_img = response.url
     }
   }
 };
