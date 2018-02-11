@@ -130,15 +130,15 @@ export default {
       rules: {
         brandName: [
           { required: true, message: "请输入品牌名称", trigger: "blur" },
-          { min: 2, max: 10, message: "长度在 2 到 10 个字符", trigger: "blur" }
+          { min: 2, max: 50, message: "长度在 2 到 50 个字符", trigger: "blur" }
         ],
         brandTitile: [
           { required: true, message: "请输入品牌介绍", trigger: "blur" },
-          { min: 2, max: 10, message: "长度在 2 到 10 个字符", trigger: "blur" }
+          { min: 2, max: 50, message: "长度在 2 到 50 个字符", trigger: "blur" }
         ],
         brandRebate: [
           { required: true, message: "请输入品牌折扣", trigger: "blur" },
-          { min: 2, max: 10, message: "长度在 2 到 10 个字符", trigger: "blur" }
+          { min: 2, max: 50, message: "长度在 2 到 50 个字符", trigger: "blur" }
         ]
       }
     };
@@ -205,6 +205,20 @@ export default {
     },
     //提交更新
     editSubmit() {
+      let filename = this.editForm.img[0].name
+      console.log(filename)
+      //删除七牛云图片
+      this.$http
+        .delete("http://localhost:9090/deleteById?name="+filename)
+        .then(res => {
+          this.ruleForm.brandImg = "";
+          console.log(res.data);
+         // return this.$confirm(`确定移除 ${file.name}？`);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      //上传时覆盖图片
       this.$refs.editForm.validate(valid => {
         if(valid) {
           //this.$confirm("确认删除该记录吗？", "提示",{})

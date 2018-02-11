@@ -19,13 +19,9 @@
       </el-form-item>
 
       <el-form-item label="是否上线">
-
         <el-radio v-model="ruleForm.status" label="1">上线</el-radio>
         <el-radio v-model="ruleForm.status" label="2">下线</el-radio>
-
       </el-form-item>
-
-      {{ruleForm}}
 
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
@@ -51,11 +47,11 @@ export default {
       rules: {
         brandName: [
           { required: true, message: "请输入品牌名称", trigger: "blur" },
-          { min: 2, max: 5, message: "长度在 2 到 5 个字符", trigger: "blur" }
+          { min: 2, max: 10, message: "长度在 2 到 5 个字符", trigger: "blur" }
         ],
         brandTitile: [
           { required: true, message: "请输入品牌介绍", trigger: "blur" },
-          { min: 2, max: 5, message: "长度在 2 到 5 个字符", trigger: "blur" }
+          { min: 2, max: 10, message: "长度在 2 到 5 个字符", trigger: "blur" }
         ],
         brandRebate: [
           { required: true, message: "请输入品牌折扣", trigger: "blur" },
@@ -84,6 +80,8 @@ export default {
                   message: "提交成功！",
                   type: "success"
                 });
+                //提交成功之后跳转到品牌列表页
+                this.$router.push(`/brand`);
           })
 
         } else {
