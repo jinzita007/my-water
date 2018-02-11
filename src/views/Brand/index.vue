@@ -197,19 +197,7 @@ export default {
     },
     //提交更新
     editSubmit() {
-      let filename = this.editForm.img[0].name;
-      console.log(filename);
-      //删除七牛云图片
-      this.$http
-        .delete("http://localhost:9090/deleteById?name=" + filename)
-        .then(res => {
-          this.ruleForm.brandImg = "";
-          console.log(res.data);
-          // return this.$confirm(`确定移除 ${file.name}？`);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      
       //上传时覆盖图片
       this.$refs.editForm.validate(valid => {
         if (valid) {
@@ -243,8 +231,21 @@ export default {
     },
     // 自定义文件上传的方式
     uploadImg(item) {
-      //if (!this.beforeUpload(item.file));
-      //return
+      
+      let filename = this.editForm.img[0].name;
+      console.log(filename);
+      //删除七牛云图片
+      this.$http
+        .delete("http://localhost:9090/deleteById?name=" + filename)
+        .then(res => {
+          this.ruleForm.brandImg = "";
+          console.log(res.data);
+          // return this.$confirm(`确定移除 ${file.name}？`);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+        
       let params = new FormData();
       params.append("file", item.file);
       this.$http
