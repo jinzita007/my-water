@@ -2,16 +2,16 @@
   <section>
 
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="品牌名称" prop="brand_name">
-        <el-input v-model="ruleForm.brand_name"></el-input>
+      <el-form-item label="品牌名称" prop="brandName">
+        <el-input v-model="ruleForm.brandName"></el-input>
       </el-form-item>
-      <el-form-item label="品牌介绍" prop="brand_titile">
-        <el-input v-model="ruleForm.brand_titile"></el-input>
+      <el-form-item label="品牌介绍" prop="brandTitile">
+        <el-input v-model="ruleForm.brandTitile"></el-input>
       </el-form-item>
-      <el-form-item label="品牌折扣" prop="brand_rebate">
-        <el-input v-model="ruleForm.brand_rebate"></el-input>
+      <el-form-item label="品牌折扣" prop="brandRebate">
+        <el-input v-model="ruleForm.brandRebate"></el-input>
       </el-form-item>
-      <el-form-item label="商品图片" prop="goods_img">
+      <el-form-item label="商品图片" prop="brandImg">
         <el-upload class="upload-demo" action="http://localhost:9090/uploadqiniu" :before-upload="beforeUpload" :limit="1" multiple :on-success="handSuccess" :on-exceed="handleExceed" :before-remove="beforeRemove" :file-list="fileList" list-type="picture">
           <el-button size="small" type="primary">点击上传</el-button>
           <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -38,32 +38,26 @@
 export default {
   data() {
     return {
-      /*fileList: [
-        {
-          name: "",
-          url: ""
-        }
-      ],*/
       filename: "",
-
       fileList: [],
       ruleForm: {
-        brand_name: "",
-        brand_title: "",
-        brand_rebate: "",
-        goods_img: "",
-        status: "1"
+        brandName: "",
+        brandTitile: "",
+        brandRebate: "",
+        brandImg: "",
+        status: "1",
+        sort:"0"
       },
       rules: {
-        brand_name: [
+        brandName: [
           { required: true, message: "请输入品牌名称", trigger: "blur" },
           { min: 2, max: 5, message: "长度在 2 到 5 个字符", trigger: "blur" }
         ],
-        brand_title: [
+        brandTitile: [
           { required: true, message: "请输入品牌介绍", trigger: "blur" },
           { min: 2, max: 5, message: "长度在 2 到 5 个字符", trigger: "blur" }
         ],
-        brand_rebate: [
+        brandRebate: [
           { required: true, message: "请输入品牌折扣", trigger: "blur" },
           { min: 2, max: 5, message: "长度在 2 到 5 个字符", trigger: "blur" }
         ]
@@ -75,9 +69,25 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert("submit!");
+          var params = new URLSearchParams();
+          params.append('brandName',this.ruleForm.brandName);
+          params.append('brandTitile',this.ruleForm.brandTitile);
+          params.append('brandRebate',this.ruleForm.brandRebate);
+          params.append('brandImg',this.ruleForm.brandImg);
+          params.append('status',this.ruleForm.status,);
+          params.append('sort',this.ruleForm.sort);
+
+          this.$http.post("http://localhost:9090/brand",params)
+          .then(res => {
+            this.addLoading = false;
+                this.$message({
+                  message: "提交成功！",
+                  type: "success"
+                });
+          })
+
         } else {
-          console.log("error submit!!");
+          console.log("提交失败!");
           return false;
         }
       });
@@ -103,7 +113,7 @@ export default {
       this.$http
         .delete("http://localhost:9090/deleteById?name="+this.filename)
         .then(res => {
-          this.ruleForm.goods_img = "";
+          this.ruleForm.brandImg = "";
           console.log(res.data);
          // return this.$confirm(`确定移除 ${file.name}？`);
         })
@@ -114,7 +124,7 @@ export default {
     handSuccess(response, file, fileList) {
       //console.log(response)
       console.log("上传图片成功的回调>>>" + JSON.stringify(response));
-      this.ruleForm.goods_img = response.id;
+      this.ruleForm.brandImg = response.id;
       this.filename = response.name;
     }
   }
