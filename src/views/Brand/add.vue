@@ -91,34 +91,7 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    beforeUpload(file) {
-      //let file = file.target.files[0]; 
-      //let param = new FormData();
-      //param.append('file',file,file.name); //file是键，file是值，就是要传的文件
-      //param.append('chunk','0');//添加form表单中其他数据
-      // 自己上传文件 想加什么都可以
-      //console.log(param.get('file')); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
-      /*let config = {
-            headers:{
-              'Content-Type':'multipart/form-data',
-              'Accept': 'application/json'
-              }
-          }; */ //添加请求头
-    //  this.$http.post("http://localhost:9090/uploadqiniu", param)
-     //   .then(res => {
-              /*this.$message({
-                message: "上传成功！",
-                type: "success"
-              })*/
-       //       this.ruleForm.goods_img = res.data.url
-              //this.fileList = res.data
-       //       console.log(res.data)
-     //         })
-    //    .catch(err => {
-    //      console.log(err);
-   // });
-  //  return false // 返回false不会自动上传
-    },
+    beforeUpload(file) {},
     handleRemove(file, fileList) {
       console.log(file, fileList);
     },
@@ -138,7 +111,7 @@ export default {
     handSuccess(response, file, fileList) {
       //console.log(response)
       console.log('上传图片成功的回调>>>'+JSON.stringify(response));
-      this.ruleForm.goods_img = response.url
+      this.ruleForm.goods_img = response.id
     }
   }
 };
