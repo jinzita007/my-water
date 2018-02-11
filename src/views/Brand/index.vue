@@ -66,10 +66,9 @@
         :http-request="uploadImg"
         :show-file-list="false"
         :before-upload="beforeUpload">
-        <img v-if="editForm.img" :src="editForm.img[0].url" class="avatar">
+        <img v-if="editForm.url" :src="editForm.url" class="avatar">
+        <img v-show="Imgshow" v-if="editForm.img" :src="editForm.img[0].url" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          <!--<el-button size="small" type="primary">点击上传</el-button>
-          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
         </el-upload>
 
       </el-form-item>
@@ -127,6 +126,7 @@ export default {
         status: "",
         sort:"0"
       },
+      Imgshow: true,
       rules: {
         brandName: [
           { required: true, message: "请输入品牌名称", trigger: "blur" },
@@ -138,7 +138,7 @@ export default {
         ],
         brandRebate: [
           { required: true, message: "请输入品牌折扣", trigger: "blur" },
-          { min: 2, max: 5, message: "长度在 2 到 10 个字符", trigger: "blur" }
+          { min: 2, max: 10, message: "长度在 2 到 10 个字符", trigger: "blur" }
         ]
       }
     };
@@ -199,6 +199,7 @@ export default {
 
      //显示编辑界面
     handleEdit(index, row) {
+      this.Imgshow = true
       this.editFormVisible = true
       this.editForm = Object.assign({}, row)
     },
@@ -246,6 +247,8 @@ export default {
         //this.editForm.brandId = res.data.brandId
         console.log(res.data)
         this.editForm.brandImg = res.data.id
+        this.Imgshow = false
+        this.editForm.url = res.data.url  
       })
       .catch(err => {
         this.$message.error('上传失败，请重新上传')
